@@ -16,9 +16,9 @@ class ANNBase(nn.Module):
         self.train_ds = SoilDataset(train_x, train_y)
         self.test_ds = SoilDataset(test_x, test_y)
         self.validation_ds = SoilDataset(validation_x, validation_y)
-        self.num_epochs = 5500
+        self.num_epochs = 500
         self.batch_size = 30000
-        self.lr = 0.001
+        self.lr = 0.01
 
     def train_model(self):
         if self.TEST:
