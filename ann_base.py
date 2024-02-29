@@ -8,15 +8,15 @@ import utils
 
 
 class ANNBase(nn.Module):
-    def __init__(self, train_x, train_y, test_x, test_y, validation_x, validation_y):
+    def __init__(self, train_ds, test_ds, validation_ds):
         super().__init__()
         self.verbose = True
         self.TEST = False
         self.device = utils.get_device()
-        self.train_ds = SoilDataset(train_x, train_y)
-        self.test_ds = SoilDataset(test_x, test_y)
-        self.validation_ds = SoilDataset(validation_x, validation_y)
-        self.num_epochs = 5
+        self.train_ds = train_ds
+        self.test_ds = test_ds
+        self.validation_ds = validation_ds
+        self.num_epochs = 500
         self.batch_size = 30000
         self.lr = 0.01
 

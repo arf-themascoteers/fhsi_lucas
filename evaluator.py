@@ -1,7 +1,7 @@
 from reporter import Reporter
-from algorithm_runner import AlgorithmRunner
 from ds_manager import DSManager
 import utils
+from ann_simple import ANNSimple
 
 
 class Evaluator:
@@ -44,20 +44,25 @@ class Evaluator:
         algorithm = self.algorithms[index_algorithm]
         feature_set = self.feature_sets[index_config]
         ds = DSManager(self.folds, feature_set)
-        for fold_number, (train_x, train_y, test_x, test_y, validation_x, validation_y) in enumerate(ds.get_k_folds()):
+        for fold_number, (train_ds, test_ds, validation_ds) in enumerate(ds.get_k_folds()):
             r2, rmse, pc = self.reporter.get_details(index_algorithm, repeat_number, fold_number, index_config)
             if r2 != 0:
                 print(f"{repeat_number}-{fold_number} done already")
                 continue
             else:
-                r2, rmse, pc = AlgorithmRunner.calculate_score(train_x, train_y,
-                                                           test_x, test_y,
-                                                           validation_x, validation_y,
-                                                           algorithm
-                                                           )
+                r2, rmse, pc = Evaluator.calculate_score(train_ds, test_ds, validation_ds, algorithm)
             if self.verbose:
                 print(f"{r2} - {rmse} - {pc}")
             self.reporter.set_details(index_algorithm, repeat_number, fold_number, index_config, r2, rmse, pc)
             self.reporter.write_details()
             self.reporter.update_summary()
 
+    @staticmethod
+    def calculate_score(train_ds, test_ds, validation_ds,algorithm):
+        print(f"Train: {len(train_ds.y)}, Test: {len(test_ds.y)}, Validation: {len(validation_ds.y)}")
+        clazz = None
+        if algorithm == "ann_simple":
+            clazz = ANNSimple
+        model_instance = clazz(train_ds, test_ds, validation_ds)
+        r2, rmse, pc = model_instance.run()
+        return max(r2,0), rmse, pc

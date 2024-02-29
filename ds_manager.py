@@ -4,6 +4,7 @@ import torch
 from sklearn import model_selection
 from sklearn.preprocessing import MinMaxScaler
 import utils
+from soil_dataset import SoilDataset
 
 
 class DSManager:
@@ -17,12 +18,12 @@ class DSManager:
         torch.manual_seed(0)
         
         df = pd.read_csv(utils.get_data_file())
-
+        self.derived_columns = []
         for col in df.columns:
             scaler = MinMaxScaler()
             df[col] = scaler.fit_transform(df[[col]])
 
-        df = DSManager.filter(df, self.feature_set)
+        df, derived_column, base_columns = DSManager.filter(df, self.feature_set)
         self.data = df.sample(frac=1).to_numpy()
 
     @staticmethod
@@ -44,7 +45,7 @@ class DSManager:
             if a_base_column not in base_columns:
                 df.drop(columns=[a_base_column], axis=1, inplace=True)
 
-        return df
+        return df, derived_column, base_columns
 
     @staticmethod
     def derive(df, column_name):
@@ -69,7 +70,9 @@ class DSManager:
             validation_x = validation_data[:, 0:-1]
             validation_y = validation_data[:, -1]
 
-            yield train_x, train_y, test_x, test_y, validation_x, validation_y
+            yield SoilDataset(train_x, train_y), \
+                SoilDataset(test_x, test_y), \
+                SoilDataset(validation_x, validation_y)
 
     def get_folds(self):
         return self.folds
@@ -79,9 +82,8 @@ if __name__ == "__main__":
     from torch.utils.data import DataLoader
     from soil_dataset import SoilDataset
     dm = DSManager(3,["ndvi","b1","b4"])
-    for fold_number, (train_x, train_y, test_x, test_y, validation_x, validation_y) in enumerate(dm.get_k_folds()):
-        ds = SoilDataset(train_x, train_y)
-        dataloader = DataLoader(ds, batch_size=500, shuffle=True)
+    for fold_number, (dtrain, dtest, dval) in enumerate(dm.get_k_folds()):
+        dataloader = DataLoader(dtrain, batch_size=500, shuffle=True)
         for batch_number, (x, y) in enumerate(dataloader):
             print(x.shape)
             print(y.shape)
