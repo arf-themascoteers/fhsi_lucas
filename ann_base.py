@@ -16,7 +16,7 @@ class ANNBase(nn.Module):
         self.train_ds = train_ds
         self.test_ds = test_ds
         self.validation_ds = validation_ds
-        self.num_epochs = 500
+        self.num_epochs = 5
         self.batch_size = 30000
         self.lr = 0.01
 
@@ -45,14 +45,14 @@ class ANNBase(nn.Module):
                           f'Loss:{loss.item():.6f}, '
                           f'R2_TRAIN: {r2_test:.3f}, R2_Validation: {r2_validation:.3f}', end=""
                           )
-                    self.verbose_after(y_all, y_hat_all)
+                    self.verbose_after(x, y)
                     print("")
 
                 loss.backward()
                 optimizer.step()
                 optimizer.zero_grad()
 
-    def verbose_after(self, y_all, y_hat_all):
+    def verbose_after(self, x, y):
         pass
 
     def evaluate(self, ds):

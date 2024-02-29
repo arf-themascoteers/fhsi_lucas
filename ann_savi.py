@@ -26,9 +26,13 @@ class ANNSAVI(ANNBase):
         savi = ((band_8-band_4)/(band_8+band_4+self.L))*(1+self.L)
         return savi.reshape(-1,1)
 
-    def verbose_after(self, y_all, y_hat_all):
-        print(f" L: {self.L.item()}", end="")
+    def verbose_after(self, x, y):
+        savi = self.savi(x).reshape(-1)
+        pc = utils.calculate_pc(y.detach().cpu().numpy(), savi.detach().cpu().numpy())
+        print(f" L: {self.L.item()}, PC: {pc} ", end="")
 
     def pc(self, ds):
-        savi = self.savi(ds.x)
-        return utils.calculate_pc(ds.y, savi)
+        x = ds.x.to(self.device)
+        y = ds.y.numpy()
+        savi = self.savi(x).reshape(-1)
+        return utils.calculate_pc(y, savi.detach().cpu().numpy())
