@@ -2,6 +2,7 @@ from reporter import Reporter
 from ds_manager import DSManager
 import utils
 from ann_simple import ANNSimple
+from ann_savi import ANNSAVI
 
 
 class Evaluator:
@@ -63,6 +64,8 @@ class Evaluator:
         clazz = None
         if algorithm == "ann_simple":
             clazz = ANNSimple
+        elif algorithm == "ann_savi":
+            clazz = ANNSAVI
         model_instance = clazz(train_ds, test_ds, validation_ds)
         r2, rmse, pc = model_instance.run()
         return max(r2,0), rmse, pc

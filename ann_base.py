@@ -43,12 +43,17 @@ class ANNBase(nn.Module):
                     r2_validation = r2_score(y_all, y_hat_all)
                     print(f'Epoch:{epoch} (of {self.num_epochs}), Batch: {batch_number+1} of {total_batch}, '
                           f'Loss:{loss.item():.6f}, '
-                          f'R2_TRAIN: {r2_test:.3f}, R2_Validation: {r2_validation:.3f}'
+                          f'R2_TRAIN: {r2_test:.3f}, R2_Validation: {r2_validation:.3f}', end=""
                           )
+                    self.verbose_after(y_all, y_hat_all)
+                    print("")
 
                 loss.backward()
                 optimizer.step()
                 optimizer.zero_grad()
+
+    def verbose_after(self, y_all, y_hat_all):
+        pass
 
     def evaluate(self, ds):
         batch_size = 30000
@@ -82,9 +87,13 @@ class ANNBase(nn.Module):
         y_all, y_hat_all = self.evaluate(ds)
         r2 = r2_score(y_all, y_hat_all)
         rmse = root_mean_squared_error(y_all, y_hat_all)
-        pc = utils.calculate_pc(y_all, y_hat_all)
+        pc = self.pc(ds)
         return r2, rmse, pc
 
     def run(self):
         self.train_model()
         return self.metrics(self.test_ds)
+
+    def pc(self, ds):
+        y_all, y_hat_all = self.evaluate(ds)
+        return utils.calculate_pc(y_all, y_hat_all)
