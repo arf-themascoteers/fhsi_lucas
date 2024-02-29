@@ -1,6 +1,8 @@
 from scipy.stats import pearsonr
 import torch
 import pandas as pd
+from sklearn.metrics import r2_score, root_mean_squared_error
+import numpy as np
 
 
 def calculate_pc(x1,x2):
@@ -23,4 +25,7 @@ def get_data_file():
 
 
 if __name__ == "__main__":
-    print(get_all_features())
+    x = np.array([1,2,3,4,5,6,7,8,9])
+    y = x*10
+    print(calculate_pc(y,x))
+    print(r2_score(y,x))
