@@ -1,29 +1,30 @@
-from s2_extractor import S2Extractor
 from reporter import Reporter
 from algorithm_runner import AlgorithmRunner
 from ds_manager import DSManager
+import utils
 
 
 class Evaluator:
-    def __init__(self, prefix="", verbose=False, repeat=1, folds=10, algorithms=None):
+    def __init__(self, prefix="", verbose=False, repeat=1, folds=10, algorithms=None, feature_sets=None):
         self.repeat = repeat
         self.folds = folds
         self.verbose = verbose
         self.algorithms = algorithms
 
         if self.algorithms is None:
-            self.algorithms = ["mlr", "rf", "svr", "ann_simple"]
+            self.algorithms = ["ann_simple"]
 
-        self.config_list = ["Run"]
-        self.csvs = []
-        self.scenes = []
+        if feature_sets is None:
+            feature_sets = [utils.get_all_features()]
 
-        for config in self.config_list:
-            s2 = S2Extractor(["S2A_MSIL2A_20220207T002711_N0400_R016_T54HWE_20220207T023040"])
-            ml = s2.process()
-            self.csvs.append(ml)
+        self.feature_sets = []
 
-        self.reporter = Reporter(prefix, self.config_list, self.algorithms, self.repeat, self.folds)
+        for feature_set in feature_sets:
+            if len(feature_set) == 0:
+                feature_set = utils.get_all_features()
+            self.feature_sets.append(feature_set)
+
+        self.reporter = Reporter(prefix, self.feature_sets, self.algorithms, self.repeat, self.folds)
 
     def process(self):
         for repeat_number in range(self.repeat):
@@ -34,8 +35,8 @@ class Evaluator:
             self.process_algorithm(repeat_number, index_algorithm)
 
     def process_algorithm(self, repeat_number, index_algorithm):
-        for index_config in range(len(self.config_list)):
-            config = self.config_list[index_config]
+        for index_config in range(len(self.feature_sets)):
+            config = self.feature_sets[index_config]
             print("Start", f"{repeat_number}:{self.algorithms[index_algorithm]} - {config}")
             self.process_config(repeat_number, index_algorithm, index_config)
 

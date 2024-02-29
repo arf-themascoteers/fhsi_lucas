@@ -7,8 +7,8 @@ if __name__ == "__main__":
         algorithms=[
             "ann_simple"
         ],
-        features = [
-
+        feature_sets= [
+            ["ndvi"]
         ]
     )
     c.process()

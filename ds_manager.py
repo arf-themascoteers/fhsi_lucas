@@ -3,23 +3,60 @@ from sklearn.model_selection import KFold
 import torch
 from sklearn import model_selection
 from sklearn.preprocessing import MinMaxScaler
+import utils
 
 
 class DSManager:
-    def __init__(self, csv, folds=10):
+    def __init__(self, folds=10, feature_set=None):        
         self.folds = folds
+        self.feature_set = feature_set
+        
+        if self.feature_set is None:
+            self.feature_set = utils.get_all_features()
+        
         torch.manual_seed(0)
-        self.df = pd.read_csv(csv)
+        
+        df = pd.read_csv(utils.get_data_file())
 
-        for col in self.df.columns:
+        for col in df.columns:
             scaler = MinMaxScaler()
-            self.df[col] = scaler.fit_transform(self.df[[col]])
+            df[col] = scaler.fit_transform(df[[col]])
 
-        self.data = self.df.sample(frac=1).to_numpy()
+        df = DSManager.filter(df, self.feature_set)
+        self.data = df.sample(frac=1).to_numpy()
+
+    @staticmethod
+    def filter(df, feature_set):
+        all_base_columns = utils.get_all_features()
+        base_columns = []
+        derived_columns = []
+        for feature in feature_set:
+            if feature in all_base_columns:
+                base_columns.append(feature)
+            else:
+                derived_columns.append(feature)
+
+        for derived_column in derived_columns:
+            new_values = DSManager.derive(df, derived_column)
+            df.insert(len(df.columns) - 1, derived_column, new_values)
+
+        for a_base_column in all_base_columns:
+            if a_base_column not in base_columns:
+                df.drop(columns=[a_base_column], axis=1, inplace=True)
+
+        return df
+
+    @staticmethod
+    def derive(df, column_name):
+        b4 = df["b4"]
+        b8 = df["b8"]
+        if column_name == "ndvi":
+            new_values = (b8-b4)/(b8+b4)
+        return new_values
 
     def get_k_folds(self):
         kf = KFold(n_splits=self.folds)
-        for i, (train_index, test_index) in enumerate(kf.split(self.df)):
+        for i, (train_index, test_index) in enumerate(kf.split(self.data)):
             train_data = self.data[train_index]
             train_data, validation_data = model_selection.train_test_split(train_data, test_size=0.1, random_state=2)
             test_data = self.data[test_index]
@@ -39,7 +76,7 @@ class DSManager:
 if __name__ == "__main__":
     from torch.utils.data import DataLoader
     from soil_dataset import SoilDataset
-    dm = DSManager("data/mangrove.csv")
+    dm = DSManager(3,["ndvi","b1","b4"])
     for fold_number, (train_x, train_y, test_x, test_y, validation_x, validation_y) in enumerate(dm.get_k_folds()):
         ds = SoilDataset(train_x, train_y)
         dataloader = DataLoader(ds, batch_size=500, shuffle=True)
