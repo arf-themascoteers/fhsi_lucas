@@ -17,7 +17,7 @@ class ANNBase(nn.Module):
         self.test_ds = SoilDataset(test_x, test_y)
         self.validation_ds = SoilDataset(validation_x, validation_y)
         self.num_epochs = 5500
-        self.batch_size = 3000
+        self.batch_size = 30000
         self.lr = 0.001
 
     def train_model(self):
@@ -26,7 +26,7 @@ class ANNBase(nn.Module):
         self.train()
         self.to(self.device)
         optimizer = torch.optim.Adam(self.parameters(), lr=self.lr, weight_decay=0.001)
-        criterion = torch.nn.MSELoss(reduction='sum')
+        criterion = torch.nn.MSELoss(reduction='mean')
         dataloader = DataLoader(self.train_ds, batch_size=self.batch_size, shuffle=True)
         total_batch = len(dataloader)
         for epoch in range(self.num_epochs):
