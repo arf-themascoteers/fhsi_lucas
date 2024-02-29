@@ -42,9 +42,9 @@ class Evaluator:
 
     def process_config(self, repeat_number, index_algorithm, index_config):
         algorithm = self.algorithms[index_algorithm]
-        ds = DSManager(self.csvs[index_config], folds=self.folds)
+        feature_set = self.feature_sets[index_config]
+        ds = DSManager(self.folds, feature_set)
         for fold_number, (train_x, train_y, test_x, test_y, validation_x, validation_y) in enumerate(ds.get_k_folds()):
-            print("CSV: ", self.csvs[index_config])
             r2, rmse, pc = self.reporter.get_details(index_algorithm, repeat_number, fold_number, index_config)
             if r2 != 0:
                 print(f"{repeat_number}-{fold_number} done already")

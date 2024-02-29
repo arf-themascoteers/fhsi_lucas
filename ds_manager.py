@@ -51,7 +51,9 @@ class DSManager:
         b4 = df["b4"]
         b8 = df["b8"]
         if column_name == "ndvi":
-            new_values = (b8-b4)/(b8+b4)
+            den = (b8+b4)
+            den[den==0]=0.0001
+            new_values = (b8-b4)/den
         return new_values
 
     def get_k_folds(self):
