@@ -45,7 +45,7 @@ class DSManager:
             if a_base_column not in base_columns:
                 df.drop(columns=[a_base_column], axis=1, inplace=True)
 
-        return df, derived_column, base_columns
+        return df, derived_columns, base_columns
 
     @staticmethod
     def derive(df, column_name):

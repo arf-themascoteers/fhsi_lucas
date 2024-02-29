@@ -8,7 +8,9 @@ if __name__ == "__main__":
             "ann_simple"
         ],
         feature_sets= [
-            ["ndvi"]
+            ["ndvi"],
+            ["b4","b8"],
+            ["b4","b8","ndvi"]
         ]
     )
     c.process()
