@@ -5,7 +5,7 @@ if __name__ == "__main__":
         prefix="savi",
         folds=3,
         algorithms=[
-            "ann_savi"
+            "ann_savi_learnable"
         ],
         feature_sets= [
             []

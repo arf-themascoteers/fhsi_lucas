@@ -3,6 +3,7 @@ from ds_manager import DSManager
 import utils
 from ann_simple import ANNSimple
 from ann_savi import ANNSAVI
+from ann_savi_learnable import ANNSAVILearnable
 
 
 class Evaluator:
@@ -66,6 +67,8 @@ class Evaluator:
             clazz = ANNSimple
         elif algorithm == "ann_savi":
             clazz = ANNSAVI
+        elif algorithm == "ann_savi_learnable":
+            clazz = ANNSAVILearnable
         model_instance = clazz(train_ds, test_ds, validation_ds)
         r2, rmse, pc = model_instance.run()
         return max(r2,0), rmse, pc
