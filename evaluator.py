@@ -49,7 +49,7 @@ class Evaluator:
     def process_algorithm(self, repeat_number, index_algorithm):
         for index_config in range(len(self.feature_sets)):
             config = self.feature_sets[index_config]
-            print("Start", f"{repeat_number}:{self.algorithms[index_algorithm]} - {config}")
+            print("Trying", f"{repeat_number}:{self.algorithms[index_algorithm]} - {config}")
             self.process_config(repeat_number, index_algorithm, index_config)
 
     def process_config(self, repeat_number, index_algorithm, index_config):
@@ -62,6 +62,7 @@ class Evaluator:
                 print(f"{repeat_number}-{fold_number} done already")
                 continue
             else:
+                print("Start", f"{repeat_number}:{self.algorithms[index_algorithm]} - fold {fold_number}")
                 r2, rmse, pc = Evaluator.calculate_score(train_ds, test_ds, validation_ds, algorithm)
             if self.verbose:
                 print(f"{r2} - {rmse} - {pc}")
