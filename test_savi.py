@@ -1,9 +1,13 @@
 from evaluator import Evaluator
+import utils
 
 if __name__ == "__main__":
+    folds = 10
+    if utils.is_test():
+        folds = 3
     c = Evaluator(
         prefix="savi",
-        folds=10,
+        folds=folds,
         algorithms=[
             "ann_savi",
             "ann_savi_learnable",
