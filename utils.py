@@ -21,6 +21,8 @@ def get_all_features():
 
 
 def get_data_file():
+    if is_test():
+        return "data/lucas_s2_min.csv"
     return "data/lucas_s2.csv"
 
 
