@@ -13,10 +13,14 @@ class ANNSAVILearnableFn(ANNSAVI):
         )
 
     def get_L(self, x=None):
+        return torch.mean(self.get_fn(x))
+
+    def get_fn(self, x):
         band_8 = x[:,7:8]
         band_4 = x[:,3:4]
         band_4_8 = torch.hstack((band_4, band_8))
-        return torch.mean(self.linear1(band_4_8))
+        self.fn = self.linear1(band_4_8)
+        return self.fn
 
 
 

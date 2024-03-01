@@ -18,6 +18,7 @@ from ann_savi_learnable_fn_all import ANNSAVILearnableFnAll
 from ann_savi_learnable_bi import ANNSAVILearnableBI
 
 from ann_savi_learnable_bi_skip import ANNSAVILearnableBISkip
+from ann_savi_learnable_fn_skip import ANNSAVILearnableFnSkip
 
 
 class Evaluator:
@@ -101,6 +102,8 @@ class Evaluator:
         elif algorithm == "ann_savi_learnable_bi":
             clazz = ANNSAVILearnableBI
 
+        elif algorithm == "ann_savi_learnable_fn_skip":
+            clazz = ANNSAVILearnableFnSkip
         elif algorithm == "ann_savi_learnable_bi_skip":
             clazz = ANNSAVILearnableBISkip
 
