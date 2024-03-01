@@ -52,6 +52,10 @@ class ANNBase(nn.Module):
                 loss.backward()
                 optimizer.step()
                 optimizer.zero_grad()
+            self.after_epoch(epoch)
+
+    def after_epoch(self, epoch):
+        pass
 
     def verbose_after(self, ds):
         pass
