@@ -21,7 +21,7 @@ class ANNSAVI(ANNBase):
         return self.linear(savi_val)
 
     def savi(self, x):
-        band_8 = x[:,10]
+        band_8 = x[:,7]
         band_4 = x[:,3]
         savi = ((band_8-band_4)/(band_8+band_4+self.L))*(1+self.L)
         return savi.reshape(-1,1)
