@@ -13,8 +13,11 @@ class ANNSAVILearnableFnAll(ANNSAVI):
         )
 
     def get_L(self, x=None):
-        return torch.mean(self.linear1(x))
+        return torch.mean(self.get_fn_all(x))
 
+    def get_fn_all(self, x):
+        self.fn_all = self.linear1(x)
+        return self.fn_all
 
 
 

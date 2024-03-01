@@ -46,14 +46,14 @@ class ANNBase(nn.Module):
                           f'Loss:{loss.item():.6f}, '
                           f'R2_TRAIN: {r2_test:.3f}, R2_Validation: {r2_validation:.3f}', end=""
                           )
-                    self.verbose_after(x, y)
+                    self.verbose_after(self.validation_ds)
                     print("")
 
                 loss.backward()
                 optimizer.step()
                 optimizer.zero_grad()
 
-    def verbose_after(self, x, y):
+    def verbose_after(self, ds):
         pass
 
     def evaluate(self, ds):

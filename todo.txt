@@ -40,3 +40,12 @@ bi, fn, fn_all
 -with and without L-skip (skip-all)
 
 half epoch
+
+===
+fix reporter
+
+doc - math justification - IEEE paper
+
+code - fn_all
+
+then half epoch for all
