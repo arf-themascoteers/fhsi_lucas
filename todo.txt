@@ -35,4 +35,8 @@ IEEE paper
 
 ===
 
-bi, fn
+bi, fn, fn_all
+-with and without skip
+-with and without L-skip (skip-all)
+
+half epoch

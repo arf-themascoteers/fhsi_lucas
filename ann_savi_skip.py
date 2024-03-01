@@ -4,8 +4,8 @@ from ann_savi import ANNSAVI
 
 
 class ANNSAVISkip(ANNSAVI):
-    def __init__(self, train_ds, test_ds, validation_ds):
-        super().__init__(train_ds, test_ds, validation_ds)
+    def __init__(self, train_ds, test_ds, validation_ds, L=None):
+        super().__init__(train_ds, test_ds, validation_ds, L)
         self.linear = nn.Sequential(
             nn.Linear(3,20),
             nn.LeakyReLU(),

@@ -5,9 +5,12 @@ import utils
 
 
 class ANNSAVI(ANNBase):
-    def __init__(self, train_ds, test_ds, validation_ds):
+    def __init__(self, train_ds, test_ds, validation_ds, L=None):
         super().__init__(train_ds, test_ds, validation_ds)
-        self.L = nn.Parameter(torch.tensor(0.5), requires_grad=False)
+        if L is None:
+            self.L = nn.Parameter(torch.tensor(0.5), requires_grad=False)
+        else:
+            self.L = L
         self.linear = nn.Sequential(
             nn.Linear(1,20),
             nn.LeakyReLU(),

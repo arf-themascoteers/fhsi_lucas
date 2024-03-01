@@ -13,6 +13,8 @@ from ann_savi_learnable import ANNSAVILearnable
 from ann_savi_skip_learnable import ANNSAVISkipLearnable
 from ann_savi_skip_all_learnable import ANNSAVISkipAllLearnable
 
+from ann_savi_learnable_fn import ANNSAVILearnableFn
+
 
 class Evaluator:
     def __init__(self, prefix="", verbose=False, repeat=1, folds=10, algorithms=None, feature_sets=None):
@@ -87,6 +89,8 @@ class Evaluator:
             clazz = ANNSAVISkipLearnable
         elif algorithm == "ann_savi_skip_all_learnable":
             clazz = ANNSAVISkipAllLearnable
+        elif algorithm == "ann_savi_learnable_fn":
+            clazz = ANNSAVILearnableFn
 
         model_instance = clazz(train_ds, test_ds, validation_ds)
         r2, rmse, pc = model_instance.run()
