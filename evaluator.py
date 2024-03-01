@@ -22,6 +22,9 @@ from ann_savi_learnable_fn_all_skip import ANNSAVILearnableFnAllSkip
 from ann_savi_learnable_bi_skip import ANNSAVILearnableBISkip
 
 from ann_savi_learnable_half import ANNSAVILearnableHalf
+from ann_savi_skip_learnable_half import ANNSAVISkipLearnableHalf
+from ann_savi_skip_all_learnable_half import ANNSAVISkipAllLearnableHalf
+
 
 
 class Evaluator:
@@ -114,6 +117,10 @@ class Evaluator:
 
         elif algorithm == "ann_savi_learnable_half":
             clazz = ANNSAVILearnableHalf
+        elif algorithm == "ann_savi_skip_learnable_half":
+            clazz = ANNSAVISkipLearnableHalf
+        elif algorithm == "ann_savi_skip_all_learnable_half":
+            clazz = ANNSAVISkipAllLearnableHalf
 
         model_instance = clazz(train_ds, test_ds, validation_ds)
         r2, rmse, pc = model_instance.run()
