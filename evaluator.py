@@ -2,8 +2,16 @@ from reporter import Reporter
 from ds_manager import DSManager
 import utils
 from ann_simple import ANNSimple
+
+from ann_savi_bands_only import ANNSAVIBandsOnly
+
 from ann_savi import ANNSAVI
+from ann_savi_skip import ANNSAVISkip
+from ann_savi_skip_all import ANNSAVISkipAll
+
 from ann_savi_learnable import ANNSAVILearnable
+from ann_savi_skip_learnable import ANNSAVISkipLearnable
+from ann_savi_skip_all_learnable import ANNSAVISkipAllLearnable
 
 
 class Evaluator:
@@ -65,10 +73,21 @@ class Evaluator:
         clazz = None
         if algorithm == "ann_simple":
             clazz = ANNSimple
+        elif algorithm == "ann_savi_bands_only":
+            clazz = ANNSAVIBandsOnly
         elif algorithm == "ann_savi":
             clazz = ANNSAVI
+        elif algorithm == "ann_savi_skip":
+            clazz = ANNSAVISkip
+        elif algorithm == "ann_savi_skip_all":
+            clazz = ANNSAVISkipAll
         elif algorithm == "ann_savi_learnable":
             clazz = ANNSAVILearnable
+        elif algorithm == "ann_savi_skip_learnable":
+            clazz = ANNSAVISkipLearnable
+        elif algorithm == "ann_savi_skip_all_learnable":
+            clazz = ANNSAVISkipAllLearnable
+
         model_instance = clazz(train_ds, test_ds, validation_ds)
         r2, rmse, pc = model_instance.run()
         return max(r2,0), rmse, pc

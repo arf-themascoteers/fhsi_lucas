@@ -34,3 +34,8 @@ ozuhat
 IEEE paper
 
 ===
+
+b4, b8 only
+
+all learnable versions
+bi, fn
