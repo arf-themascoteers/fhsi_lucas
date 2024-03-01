@@ -25,10 +25,7 @@ def get_data_file():
 
 
 if __name__ == "__main__":
-    # x = np.array([1,2,3,4,5,6,7,8,9])
-    # y = x*10
-    # print(calculate_pc(y,x))
-    # print(r2_score(y,x))
-    x = torch.tensor([[1,2,3],[10,20,30]])
-    y = x[:,[0,2]]
-    print(y)
+    savi = np.array([1,2,3,4,5,6,7,8,9])
+    soc = np.array([10,20,30,40,50,60,70,80,90])
+    print("Pearson",calculate_pc(soc,savi))
+    print("R2",r2_score(soc,savi))
