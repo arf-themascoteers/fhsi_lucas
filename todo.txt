@@ -17,35 +17,8 @@ demmin
 burkina faso
 lucas-extracted
 
+--
 
-===
+other SIs
 
-savi etc.
-pc
 
-only savi
-savi + b5 b8
-bi, fn
-savi nike embedded
-
-ozuhat
----------
-
-IEEE paper
-
-===
-
-bi, fn, fn_all
--with and without skip
--with and without L-skip (skip-all)
-
-half epoch
-
-===
-fix reporter
-
-doc - math justification - IEEE paper
-
-code - fn_all
-
-then half epoch for all
