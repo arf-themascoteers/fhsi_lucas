@@ -29,7 +29,8 @@ class ANNSAVI(ANNBase):
     def savi(self, x):
         band_8 = x[:,7]
         band_4 = x[:,3]
-        savi = ((band_8-band_4)/(band_8+band_4+self.get_L(x)))*(1+self.get_L(x))
+        l = self.get_L(x)
+        savi = ((band_8-band_4)/(band_8+band_4+l))*(1+l)
         return savi.reshape(-1,1)
 
     def verbose_after(self, x, y):
