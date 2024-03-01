@@ -14,6 +14,7 @@ from ann_savi_skip_learnable import ANNSAVISkipLearnable
 from ann_savi_skip_all_learnable import ANNSAVISkipAllLearnable
 
 from ann_savi_learnable_fn import ANNSAVILearnableFn
+from ann_savi_learnable_bi import ANNSAVILearnableBI
 
 
 class Evaluator:
@@ -58,7 +59,7 @@ class Evaluator:
         ds = DSManager(self.folds, feature_set)
         for fold_number, (train_ds, test_ds, validation_ds) in enumerate(ds.get_k_folds()):
             r2, rmse, pc = self.reporter.get_details(index_algorithm, repeat_number, fold_number, index_config)
-            if r2 != 0:
+            if rmse != 0:
                 print(f"{repeat_number}-{fold_number} done already")
                 continue
             else:
@@ -92,6 +93,8 @@ class Evaluator:
             clazz = ANNSAVISkipAllLearnable
         elif algorithm == "ann_savi_learnable_fn":
             clazz = ANNSAVILearnableFn
+        elif algorithm == "ann_savi_learnable_bi":
+            clazz = ANNSAVILearnableBI
 
         model_instance = clazz(train_ds, test_ds, validation_ds)
         r2, rmse, pc = model_instance.run()

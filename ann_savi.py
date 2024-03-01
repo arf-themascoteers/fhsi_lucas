@@ -8,7 +8,7 @@ class ANNSAVI(ANNBase):
     def __init__(self, train_ds, test_ds, validation_ds, L=None):
         super().__init__(train_ds, test_ds, validation_ds)
         if L is None:
-            self.L = nn.Parameter(torch.tensor(0.5), requires_grad=False)
+            self.L = torch.tensor(0.5)
         else:
             self.L = L
         self.linear = nn.Sequential(
@@ -19,6 +19,9 @@ class ANNSAVI(ANNBase):
             nn.Linear(10,1)
         )
 
+    def get_L(self, x=None):
+        return self.L
+
     def forward(self,x):
         savi_val = self.savi(x)
         return self.linear(savi_val)
@@ -26,13 +29,13 @@ class ANNSAVI(ANNBase):
     def savi(self, x):
         band_8 = x[:,7]
         band_4 = x[:,3]
-        savi = ((band_8-band_4)/(band_8+band_4+self.L))*(1+self.L)
+        savi = ((band_8-band_4)/(band_8+band_4+self.get_L(x)))*(1+self.get_L(x))
         return savi.reshape(-1,1)
 
     def verbose_after(self, x, y):
         savi = self.savi(x).reshape(-1)
         pc = utils.calculate_pc(y.detach().cpu().numpy(), savi.detach().cpu().numpy())
-        print(f" L: {self.L.item()}, PC: {pc} ", end="")
+        print(f" L: {self.get_L(x).item()}, PC: {pc} ", end="")
 
     def pc(self, ds):
         x = ds.x.to(self.device)

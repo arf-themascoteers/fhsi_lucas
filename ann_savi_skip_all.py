@@ -18,7 +18,7 @@ class ANNSAVISkipAll(ANNSAVI):
         savi_val = self.savi(x)
         band_8 = x[:,7:8]
         band_4 = x[:,3:4]
-        l = self.L.repeat(x.shape[0], 1)
+        l = self.get_L().repeat(x.shape[0], 1).to(self.device)
         x_short = torch.hstack((band_4, band_8, l))
         x = torch.hstack((x_short, savi_val))
         return self.linear(x)
