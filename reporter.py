@@ -55,7 +55,7 @@ class Reporter:
                 score_mean[index_features, rmse_column_index] = self.find_mean_of_done_iterations(detail_rmse_cells)
 
                 detail_pc_cells = self.details[details_row, iterations:]
-                pc_column_index = len(self.algorithms) + index_algorithm + index_algorithm
+                pc_column_index = len(self.algorithms) + len(self.algorithms) + index_algorithm
                 score_mean[index_features, pc_column_index] = self.find_mean_of_done_iterations(detail_pc_cells)
 
         self.write_summary(score_mean)
